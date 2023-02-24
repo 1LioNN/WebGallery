@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>The Web Gallery</title>
+    <link rel="icon" href="media/webgallerylogo.png" />
+    <link href="styles/cols.css" rel="stylesheet" type="text/css" />
+    <link href="styles/webgallery.css" rel="stylesheet" type="text/css" />
+    <link href="styles/form.css" rel="stylesheet" type="text/css" />
+    <link href="styles/comments.css" rel="stylesheet" type="text/css" />
+    <link href="styles/images.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-3 col-sm-12">
+        <div class="row align-center webgallery-title">
+          <img class="webgallery-logo" src="media/webgallerylogo.png" />
+          <h2>The Web Gallery</h2>
+          <div class="credits">
+            <a href="credits.html">Credits</a>
+          </div>
+        </div>
+        <h3 class="align-text">Share your favorite images with the world.</h3>
+        <h3 class="align-text">Start uploading right away!</h3>
+
+        <div class="row align-center align-vertical">
+          <button class="btn btn-transparent" id="create-post">
+            <div class="row align-center align-vertical">
+              <img class="btn-icon" src="media/plus-solid.svg" />
+              Create a Post
+            </div>
+          </button>
+        </div>
+        <form class="complex-form upload" id="upload-image-form">
+          <div class="form-title">Upload Your Image</div>
+          <input
+            type="text"
+            id="image-author"
+            class="form-element"
+            placeholder="Author Name"
+            name="username"
+            maxlength="25"
+            required
+          />
+          <input
+            type="text"
+            id="image-title"
+            class="form-element"
+            placeholder="Image Title"
+            name="title"
+            maxlength="35"
+            required
+          />
+          <input
+            type="file"
+            id="image-file"
+            name="picture"
+            class="form-element"
+            required
+          />
+          <button type="submit" id="submit-image" class="btn">
+            <div class="row align-center align-vertical">
+              <img class="btn-icon" src="media/image-regular.svg" />
+              Upload Image
+            </div>
+          </button>
+        </form>
+      </div>
+      <div class="col-6 col-sm-12">
+        <div class="row image-container">
+          <div class="row image-header align-center">
+            <h2 class="image-title"></h2>
+            <div class="image-author"></div>
+          </div>
+          <div class="image-content-container image-content-container-sm">
+            <div class="loading image-content"></div>
+          </div>
+          <div class="image-actions row"></div>
+        </div>
+      </div>
+      <div class="col-3 col-sm-12 hidden" id="comments">
+        <form class="complex-form" id="create-comment-form">
+          <div class="form-title">Share your thoughts!</div>
+          <input
+            type="text"
+            id="comment-author"
+            class="form-element"
+            placeholder="Enter your name"
+            name="username"
+            maxlength="25"
+            required
+          />
+          <textarea
+            rows="4"
+            id="comment-content"
+            class="form-element"
+            placeholder="Add Your Comment"
+            maxlength="230"
+            required
+          ></textarea>
+          <button type="submit" id="submit-comment" class="btn btn-transparent">
+            Post Comment
+          </button>
+        </form>
+        <div class="comments-container">
+          <h3 class="comments-title">Check out what others are saying!</h3>
+          <div
+            class="comment-section comment-section-sm"
+            id="comment-section"
+          ></div>
+          <div class="row pages align-center hidden" id="pages">
+            <img
+              class="page-btn prev-page-btn"
+              id="prev-page"
+              src="media/caret-left-solid.svg"
+            />
+            <div class="page-number" id="page-number">1</div>
+            <img
+              class="page-btn next-page-btn"
+              id="next-page"
+              src="media/caret-right-solid.svg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="js/api-service.js"></script>
+  <script src="js/index.js"></script>
+</html>

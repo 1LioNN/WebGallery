@@ -1,0 +1,82 @@
+.comments-container {
+  padding: 0px 15px 10px 20px;
+}
+
+.comments-title {
+  color: #317773;
+  padding-bottom: 5px;
+}
+.comment-section {
+  height: 58vh;
+  overflow-y: auto;
+}
+
+.no-comments-text {
+  margin-bottom: 100px;
+}
+.comment {
+  border: 1px solid #121212;
+  border-radius: 5px;
+  min-height: 120px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  font-weight: bold;
+  font-size: 18px;
+}
+.delete-comment-btn {
+  padding: 2px;
+  cursor: pointer;
+  width: 19px;
+  height: 19px;
+  border-radius: 7px;
+  margin-left: auto;
+}
+
+.delete-comment-btn:hover {
+  background-color: rgb(204, 204, 204);
+}
+
+.comment-content {
+  font-size: 16px;
+  margin-bottom: 6px;
+  min-height: 59px;
+  word-break: break-all;
+}
+.comment-date {
+  font-size: 14px;
+  color: #808080;
+  margin-left: auto;
+}
+
+.pages {
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  margin-top: 8px;
+}
+
+.page-btn {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+.prev-page-btn {
+  margin-right: auto;
+}
+
+.next-page-btn {
+  margin-left: auto;
+}
+
+.page-number {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+@media (max-width: 576px) {
+  .comment-section-sm {
+    height: auto;
+  }
+}
