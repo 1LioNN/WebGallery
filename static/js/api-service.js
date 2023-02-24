@@ -24,7 +24,7 @@ let apiService = (function () {
     formData.append("title", title);
     formData.append("author", author);
     formData.append("picture", picture);
-    return fetch("/api/images", {
+    return fetch("/api/images/", {
       method: "POST",
       body: formData,
     }).then((res) => res.json());
@@ -55,13 +55,6 @@ let apiService = (function () {
   // delete a comment to an image
   module.deleteComment = function (commentId) {
     return fetch("/api/comments/" + commentId, {
-      method: "DELETE",
-    }).then((res) => res.json());
-  };
-
-  //delete all comments for an image
-  module.deleteAllComments = function (imageId) {
-    return fetch("/api/comments/?imageId=" + imageId, {
       method: "DELETE",
     }).then((res) => res.json());
   };

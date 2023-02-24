@@ -18,6 +18,7 @@
         document.querySelector("#comment-section").prepend(commentElmnt);
         document.querySelector("#pages").classList.add("hidden");
         document.querySelector("#submit-image").classList.remove("disabled");
+        document.querySelector("#delete-img").classList.remove("disabled");
       } else {
         //If there are comments, display the number of pages
         document.querySelector("#pages").classList.remove("hidden");
@@ -155,11 +156,9 @@
             ) {
               return;
             }
-            apiService.deleteAllComments(image.id).then(function () {
               apiService.deleteImage(image.id).then(function () {
                 updateImage(page);
               });
-            });
           });
 
         //Previous Image
