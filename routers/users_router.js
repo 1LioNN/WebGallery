@@ -3,6 +3,8 @@ import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
 
 export const usersRouter = Router();
+const saltRounds = 10;
+const salt = bcrypt.genSaltSync(saltRounds);
 
 usersRouter.post("/", async (req, res) => {
   const user = await User.findOne({ where: { username: req.body.username } });
@@ -13,6 +15,29 @@ usersRouter.post("/", async (req, res) => {
     return res.json(newUser);
   }
   return res.json({ message: "User already exists" });
+});
+
+usersRouter.post("/signup", async (req, res) => {
+  const user = await User.findOne({ where: { username: req.body.username } });
+  if (!user) {
+    const newUser = User.build({
+      username: req.body.username,
+    });
+
+    let password = req.body.password;
+    password = bcrypt.hashSync(password, salt);
+    newUser.password = password;
+
+    try {
+      await newUser.save();
+    } catch {
+      return res.status(422).json({ error: "User creation failed." });
+    }
+    return res.json({
+      username: newUser.username,
+    });
+  }
+  return res.json({ message: "Username is taken." });
 });
 
 usersRouter.post("/signin", async (req, res) => {
@@ -51,6 +76,5 @@ usersRouter.get("/me", async (req, res) => {
   const currentUser = {
     username: user.username,
   };
-  console.log(currentUser);
   return res.json(currentUser);
 });

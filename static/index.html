@@ -15,19 +15,19 @@
     <div class="row row-reverse" id="welcome-page">
       <div class="col-6 col-sm-12">
         <div
-          class="row webgallery-title webgallery-title-filled webgallery-sm-title align-center no-border"
+          class="row webgallery-title webgallery-sm-title align-center no-border"
         >
           <img class="webgallery-logo" src="media/webgallerylogo.png" />
           <a class="credits" href="credits.html"> Credits </a>
         </div>
         <div class="welcome-message">
-          <div>Virtual Galleries at your Fingertips</div>
+          Virtual Galleries at your Fingertips
         </div>
         <div class="sign-in-prompt">Start yours today.</div>
         <div class="row sign-in-buttons sign-in-buttons-sm align-vertical">
-          <button class="btn btn-big">Create Account</button>
+          <button class="btn btn-big" id="signup-form-btn"> Create Account</button>
           <h4>- OR -</h4>
-          <button class="btn btn-big btn-transparent">Log In</button>
+          <button class="btn btn-big btn-transparent" id="login-form-btn">Log In</button>
         </div>
       </div>
       <div class="col-6 col-sm-12 background-green">
@@ -43,8 +43,8 @@
           />
         </div>
       </div>
-      <div class="row background-dim hidden" id="auth-popup">
-        <div class="auth-form auth-form-sm"></div>
+      <div class="row" id="auth-popup">
+        </div>
       </div>
     </div>
     <div class="row hidden" id="main-site">
@@ -57,8 +57,11 @@
           </div>
         </div>
 
+        <div class="row align-center" id="user-info">
+        </div>
+
         <div class="row align-center align-vertical">
-          <button class="btn btn-transparent" id="create-post">
+          <button class="btn btn-transparent btn-auth" id="create-post">
             <div class="row align-center align-vertical">
               <img class="btn-icon" src="media/plus-solid.svg" />
               Create a Post
@@ -67,15 +70,6 @@
         </div>
         <form class="complex-form upload" id="upload-image-form">
           <div class="form-title">Upload Your Image</div>
-          <input
-            type="text"
-            id="image-author"
-            class="form-element"
-            placeholder="Author Name"
-            name="username"
-            maxlength="25"
-            required
-          />
           <input
             type="text"
             id="image-title"
@@ -115,15 +109,6 @@
       <div class="col-3 col-sm-12 hidden" id="comments">
         <form class="complex-form" id="create-comment-form">
           <div class="form-title">Share your thoughts!</div>
-          <input
-            type="text"
-            id="comment-author"
-            class="form-element"
-            placeholder="Enter your name"
-            name="username"
-            maxlength="25"
-            required
-          />
           <textarea
             rows="4"
             id="comment-content"

@@ -9,8 +9,13 @@
 .upload {
   height: 0px;
 }
+
 .drop {
   height: 300px;
+}
+
+.authentication{
+  width: 400px;
 }
 
 .complex-form .form-title {
@@ -21,15 +26,23 @@
   color: #317773;
 }
 
+.complex-form .form-title-big{
+  font-size: 25px;
+  font-family: Verdana, Tahoma, sans-serif;
+  margin-bottom: 30px;
+  color: black;
+}
+
 .complex-form .form-element {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 15px;
   font-family: sans-serif;
   border-radius: 10px;
-  padding: 5px 10px 5px 10px;
+  padding: 10px 10px 10px 10px;
   border: 2px solid rgba(0, 0, 0, 0.466);
   background-color: #fdfaff;
 }
+
 
 .complex-form .form-element:focus {
   outline: none;

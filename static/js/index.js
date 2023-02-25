@@ -1,5 +1,168 @@
 (function () {
   "use strict";
+  function showSignup() {
+    let elmnt = document.createElement("div");
+    elmnt.className = "cols-12 cols-sm-12 background-dim";
+    elmnt.innerHTML = `
+    <div class="auth-form auth-form-sm">
+            <div
+          class="row webgallery-title webgallery-sm-title align-center align-vertical no-border"
+        >
+          <img class="webgallery-logo-big" src="media/webgallerylogo.png" />
+          <img class="x-icon" id="close-auth-form" src="media/x-solid.svg" />
+        </div>
+        <div class="row align-vertical">
+        <form class="complex-form authentication" id="signup-form">
+          <div class="row form-title form-title-big align-vertical">Create Your Gallery</div>
+          <input
+            type="text"
+            id="username"
+            class="form-element"
+            placeholder="Username"
+            name="username"
+            maxlength="25"
+            required
+          />
+          <input
+            type="password"
+            id="password"
+            class="form-element"
+            placeholder="Password"
+            name="title"
+            required
+          />
+          <button type="submit" id="user-signup" class="btn btn-big btn-auth">
+            <div class="row align-center align-vertical">
+              Create Gallery
+            </div>
+          </button>
+        </form>
+      </div>`;
+    document.querySelector("#auth-popup").prepend(elmnt);
+
+    //Click the x button to toggle visibility of sign up form
+    elmnt
+      .querySelector("#close-auth-form")
+      .addEventListener("click", function () {
+        document.querySelector("#auth-popup").innerHTML = "";
+      });
+    elmnt.addEventListener("click", function (e) {
+      if (e.target.className === "cols-12 cols-sm-12 background-dim") {
+        document.querySelector("#auth-popup").innerHTML = "";
+      }
+    });
+    //Sign Up Form Submission
+    elmnt
+      .querySelector("#signup-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+        let username = elmnt.querySelector("#username").value;
+        let password = elmnt.querySelector("#password").value;
+        apiService.createUser(username, password).then((res) => {
+          if (res.error) {
+            alert(res.error);
+          } else {
+            document.querySelector("#auth-popup").innerHTML = "";
+            showLogin();
+          }
+        });
+      });
+  }
+
+  function showLogin() {
+    let elmnt = document.createElement("div");
+    elmnt.className = "cols-12 cols-sm-12 background-dim";
+    elmnt.innerHTML = `
+    <div class="auth-form auth-form-sm">
+            <div
+          class="row webgallery-title webgallery-sm-title align-center align-vertical no-border"
+        >
+          <img class="webgallery-logo-big" src="media/webgallerylogo.png" />
+          <img class="x-icon" id="close-auth-form" src="media/x-solid.svg" />
+        </div>
+        <div class="row align-vertical">
+        <form class="complex-form authentication" id="login-form">
+          <div class="row form-title form-title-big align-vertical">Sign In</div>
+          <input
+            type="text"
+            id="username"
+            class="form-element"
+            placeholder="Username"
+            name="username"
+            maxlength="25"
+            required
+          />
+          <input
+            type="password"
+            id="password"
+            class="form-element"
+            placeholder="Password"
+            name="title"
+            required
+          />
+          <button type="submit" id="user-signin" class="btn btn-big btn-auth">
+            <div class="row align-center align-vertical">
+              Sign In
+            </div>
+          </button>
+        </form>
+      </div>`;
+    document.querySelector("#auth-popup").prepend(elmnt);
+
+    //Click the x button to toggle visibility of sign up form
+    elmnt
+      .querySelector("#close-auth-form")
+      .addEventListener("click", function () {
+        document.querySelector("#auth-popup").innerHTML = "";
+      });
+
+    elmnt.addEventListener("click", function (e) {
+      console.log(e.target.className);
+      if (e.target.className === "cols-12 cols-sm-12 background-dim") {
+        document.querySelector("#auth-popup").innerHTML = "";
+      }
+    });
+
+    //Sign In Form Submission
+    elmnt.querySelector("#login-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      let username = elmnt.querySelector("#username").value;
+      let password = elmnt.querySelector("#password").value;
+      apiService.loginUser(username, password).then((res) => {
+        if (res.error) {
+          alert(res.error);
+        } else {
+          document.querySelector("#auth-popup").innerHTML = "";
+          document.querySelector("#auth-popup").classList.add("hidden");
+          document.querySelector("#welcome-page").classList.add("hidden");
+          document.querySelector("#main-site").classList.remove("hidden");
+          displayUserInfo(username);
+        }
+      });
+    });
+  }
+
+  function displayUserInfo(username){
+    let userInfo = document.createElement("div");
+    userInfo.className = "col-12 col-sm-12";
+    userInfo.innerHTML = `
+    <div class="row align-vertical align-center">
+      <h3>You are currently signed in as:</h3>
+    </div>
+    <div class="row align-vertical"> 
+      <h2>${username}</h2>
+    </div>
+    <div class="row align-vertical">
+    <button class="btn btn-big" id="logout-btn">
+      <div class="row align-center align-vertical">
+        Log Out
+      </div>
+    </button>
+  </div>
+  `;
+    document.querySelector("#user-info").append(userInfo);
+  }
+
   function updateComments(imageId, page) {
     //Clear the comment section
     document.querySelector("#submit-image").classList.add("disabled");
@@ -219,45 +382,73 @@
   }
 
   window.addEventListener("load", function () {
-    //Click the create post button to toggle visibility of upload form
-    document
-      .querySelector("#create-post")
-      .addEventListener("click", function () {
-        if (
-          !document
-            .querySelector("#upload-image-form")
-            .classList.contains("drop")
-        ) {
-          document
-            .querySelector("#create-post")
-            .classList.remove("btn-transparent");
-          document.querySelector("#upload-image-form").classList.add("drop");
-        } else {
-          document.querySelector("#upload-image-form").classList.remove("drop");
-          document
-            .querySelector("#create-post")
-            .classList.add("btn-transparent");
-        }
-      });
-    //Upload Image
-    document
-      .querySelector("#upload-image-form")
-      .addEventListener("submit", function (e) {
-        if (
-          e.target.querySelector("#submit-image").classList.contains("disabled")
-        ) {
-          return;
-        }
-        e.preventDefault();
+    //Toggle visibility of screens if user is logged in
+    apiService.getUsername().then(function (res) {
+      if (res.username) {
+        displayUserInfo(res.username);
+        document.querySelector("#welcome-page").classList.add("hidden");
+        document.querySelector("#main-site").classList.remove("hidden");
+      }else{
+        document.querySelector("#welcome-page").classList.remove("hidden");
+        document.querySelector("#main-site").classList.add("hidden");
+      }
+      //Click the sign up button to toggle visibility of sign up form
+      document
+        .querySelector("#signup-form-btn")
+        .addEventListener("click", function () {
+          showSignup();
+        });
 
-        e.target.querySelector("#submit-image").classList.add("disabled");
+      //Click the sign in button to toggle visibility of sign in form
+      document
+        .querySelector("#login-form-btn")
+        .addEventListener("click", function () {
+          showLogin();
+        });
 
-        const fileField = document.querySelector('input[type="file"]');
-        const author = document.getElementById("image-author").value;
-        const title = document.getElementById("image-title").value;
-        const picture = fileField.files[0];
-        document.getElementById("upload-image-form").reset();
-        apiService.createUser(author).then(() => {
+      //Click the create post button to toggle visibility of upload form
+      document
+        .querySelector("#create-post")
+        .addEventListener("click", function () {
+          if (
+            !document
+              .querySelector("#upload-image-form")
+              .classList.contains("drop")
+          ) {
+            document
+              .querySelector("#create-post")
+              .classList.remove("btn-transparent");
+            document.querySelector("#upload-image-form").classList.add("drop");
+          } else {
+            document
+              .querySelector("#upload-image-form")
+              .classList.remove("drop");
+            document
+              .querySelector("#create-post")
+              .classList.add("btn-transparent");
+          }
+        });
+
+      //Upload Image
+      document
+        .querySelector("#upload-image-form")
+        .addEventListener("submit", function (e) {
+          if (
+            e.target
+              .querySelector("#submit-image")
+              .classList.contains("disabled")
+          ) {
+            return;
+          }
+          e.preventDefault();
+
+          e.target.querySelector("#submit-image").classList.add("disabled");
+          apiService.getUsername().then((res) => {
+          const fileField = document.querySelector('input[type="file"]');
+          const author = res.username;
+          const title = document.getElementById("image-title").value;
+          const picture = fileField.files[0];
+          document.getElementById("upload-image-form").reset();
           apiService.addImage(title, author, picture).then((res) => {
             if (res.error) {
               alert(res.error);
@@ -266,71 +457,79 @@
             updateImage(0);
           });
         });
-      });
-    //Create Comment
-    document
-      .querySelector("#create-comment-form")
-      .addEventListener("submit", function (e) {
-        if (
-          e.target
-            .querySelector("#submit-comment")
-            .classList.contains("disabled")
-        ) {
-          return;
-        }
-        e.preventDefault();
+        });
+      //Create Comment
+      document
+        .querySelector("#create-comment-form")
+        .addEventListener("submit", function (e) {
+          if (
+            e.target
+              .querySelector("#submit-comment")
+              .classList.contains("disabled")
+          ) {
+            return;
+          }
+          e.preventDefault();
 
-        e.target.querySelector("#submit-comment").classList.add("disabled");
-
-        const author = document.getElementById("comment-author").value;
-        const content = document.getElementById("comment-content").value;
-        let imageId = document.querySelector(".image-content-container")
-          .firstChild.id;
-        imageId = parseInt(imageId.substring(5, length.imageId));
-        document.getElementById("create-comment-form").reset();
-        apiService.createUser(author).then(() => {
+          e.target.querySelector("#submit-comment").classList.add("disabled");
+          apiService.getUsername().then((res) => {
+          const author = res.username;
+          const content = document.getElementById("comment-content").value;
+          let imageId = document.querySelector(".image-content-container")
+            .firstChild.id;
+          imageId = parseInt(imageId.substring(5, length.imageId));
+          document.getElementById("create-comment-form").reset();
           apiService.addComment(imageId, author, content).then(() => {
             updateComments(imageId, 0);
           });
         });
-      });
-    //Previous Page Comments
-    document.querySelector("#prev-page").addEventListener("click", function () {
-      if (document.querySelector("#prev-page").classList.contains("disabled")) {
-        return;
-      }
+        });
+      //Previous Page Comments
+      document
+        .querySelector("#prev-page")
+        .addEventListener("click", function () {
+          if (
+            document.querySelector("#prev-page").classList.contains("disabled")
+          ) {
+            return;
+          }
 
-      document.querySelector("#prev-page").classList.add("disabled");
-      document.querySelector("#next-page").classList.add("disabled");
+          document.querySelector("#prev-page").classList.add("disabled");
+          document.querySelector("#next-page").classList.add("disabled");
 
-      let imageId = document.querySelector(".image-content-container")
-        .firstChild.id;
-      imageId = parseInt(imageId.substring(5, length.imageId));
-      let page = document.querySelector("#page-number").innerHTML;
-      page = parseInt(page);
-      page--;
-      document.querySelector("#page-number").innerHTML = page;
-      updateComments(imageId, page - 1);
+          let imageId = document.querySelector(".image-content-container")
+            .firstChild.id;
+          imageId = parseInt(imageId.substring(5, length.imageId));
+          let page = document.querySelector("#page-number").innerHTML;
+          page = parseInt(page);
+          page--;
+          document.querySelector("#page-number").innerHTML = page;
+          updateComments(imageId, page - 1);
+        });
+      //Next Page Comments
+      document
+        .querySelector("#next-page")
+        .addEventListener("click", function () {
+          if (
+            document.querySelector("#next-page").classList.contains("disabled")
+          ) {
+            return;
+          }
+
+          document.querySelector("#prev-page").classList.add("disabled");
+          document.querySelector("#next-page").classList.add("disabled");
+
+          let imageId = document.querySelector(".image-content-container")
+            .firstChild.id;
+          imageId = parseInt(imageId.substring(5, length.imageId));
+          let page = document.querySelector("#page-number").innerHTML;
+          page = parseInt(page);
+          page++;
+          document.querySelector("#page-number").innerHTML = page;
+          updateComments(imageId, page - 1);
+        });
+      document.querySelector("#loading-page").classList.add("hidden");
+      updateImage(0);
     });
-    //Next Page Comments
-    document.querySelector("#next-page").addEventListener("click", function () {
-      if (document.querySelector("#next-page").classList.contains("disabled")) {
-        return;
-      }
-
-      document.querySelector("#prev-page").classList.add("disabled");
-      document.querySelector("#next-page").classList.add("disabled");
-
-      let imageId = document.querySelector(".image-content-container")
-        .firstChild.id;
-      imageId = parseInt(imageId.substring(5, length.imageId));
-      let page = document.querySelector("#page-number").innerHTML;
-      page = parseInt(page);
-      page++;
-      document.querySelector("#page-number").innerHTML = page;
-      updateComments(imageId, page - 1);
-    });
-    document.querySelector("#loading-page").classList.add("hidden");
-    updateImage(0);
   });
 })();

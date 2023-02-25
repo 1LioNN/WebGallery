@@ -69,16 +69,34 @@ let apiService = (function () {
     );
   };
 
-  module.createUser = function (username) {
-    return fetch("/api/users", {
+  module.createUser = function (username,password) {
+    return fetch("/api/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username: username,
+        password: password
       }),
     }).then((res) => res.json());
+  };
+
+  module.loginUser = function (username,password) {
+    return fetch("/api/users/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      }),
+    }).then((res) => res.json());
+  };
+
+  module.getUsername = function () {
+    return fetch(`/api/users/me`).then((res) => res.json());
   };
 
   return module;
