@@ -156,9 +156,9 @@
             ) {
               return;
             }
-              apiService.deleteImage(image.id).then(function () {
-                updateImage(page);
-              });
+            apiService.deleteImage(image.id).then(function () {
+              updateImage(page);
+            });
           });
 
         //Previous Image
@@ -332,6 +332,5 @@
     });
     document.querySelector("#loading-page").classList.add("hidden");
     updateImage(0);
-    
   });
 })();

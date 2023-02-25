@@ -34,7 +34,7 @@ app.use(
   })
 );
 
-app.use("/api/images", imagesRouter); 
+app.use("/api/images", imagesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/comments", commentsRouter);
 
