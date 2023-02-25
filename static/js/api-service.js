@@ -95,6 +95,7 @@ let apiService = (function () {
     }).then((res) => res.json());
   };
 
+
   module.getUsername = function () {
     return fetch(`/api/users/me`).then((res) => res.json());
   };

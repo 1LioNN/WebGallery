@@ -117,7 +117,6 @@
       });
 
     elmnt.addEventListener("click", function (e) {
-      console.log(e.target.className);
       if (e.target.className === "cols-12 cols-sm-12 background-dim") {
         document.querySelector("#auth-popup").innerHTML = "";
       }
@@ -153,7 +152,7 @@
       <h2>${username}</h2>
     </div>
     <div class="row align-vertical">
-    <button class="btn btn-big" id="logout-btn">
+    <button class="btn btn-big" id="logout-btn" href="/api/users/signout">
       <div class="row align-center align-vertical">
         Log Out
       </div>
@@ -161,7 +160,13 @@
   </div>
   `;
     document.querySelector("#user-info").append(userInfo);
-  }
+    userInfo.querySelector("#logout-btn").addEventListener("click", function(){
+        document.querySelector("#user-info").innerHTML = "";
+        document.querySelector("#main-site").classList.add("hidden");
+        document.querySelector("#welcome-page").classList.remove("hidden");
+      })
+    }
+    
 
   function updateComments(imageId, page) {
     //Clear the comment section
