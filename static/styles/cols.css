@@ -15,6 +15,10 @@ body {
   flex-wrap: wrap;
 }
 
+.row-reverse {
+  flex-direction: row-reverse;
+}
+
 /* 12 grid bootstrap layout */
 .col-1 {
   flex-basis: calc(1 / 12 * 100%);

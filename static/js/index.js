@@ -6,7 +6,7 @@
     document.querySelector("#delete-img").classList.add("disabled");
     document.querySelector(
       "#comment-section"
-    ).innerHTML = `<div class="loading" id="comment-loading"></div>`;
+    ).innerHTML = `<div class="loading" id="loading-comments"></div>`;
     //Get comments
     apiService.getComments(imageId, page).then(function (comments) {
       //If total number of comments is 0, display "There are no comments yet..."
@@ -14,7 +14,7 @@
         let commentElmnt = document.createElement("div");
         commentElmnt.className = "no-comments-text no-comments-text-sm";
         commentElmnt.innerHTML = "There are no comments yet...";
-        document.querySelector("#comment-loading").classList.add("hidden");
+        document.querySelector("#loading-comments").classList.add("hidden");
         document.querySelector("#comment-section").prepend(commentElmnt);
         document.querySelector("#pages").classList.add("hidden");
         document.querySelector("#submit-image").classList.remove("disabled");
@@ -41,7 +41,7 @@
         if (comments.comments.length === 0 && page > 0) {
           updateComments(imageId, page - 1);
         }
-        document.querySelector("#comment-loading").classList.add("hidden");
+        document.querySelector("#loading-comments").classList.add("hidden");
 
         //Display comments
         comments.comments.forEach(function (comment) {
@@ -82,7 +82,7 @@
     //Clear the image content container
     document.querySelector(
       ".image-content-container"
-    ).innerHTML = `<div class="loading image-content"></div>`;
+    ).innerHTML = `<div class="loading" id = "loading-image"></div>`;
     //Clear the image actions bar
     document.querySelector(".image-actions").innerHTML = "";
     //Clear Title and Author
@@ -330,6 +330,8 @@
       document.querySelector("#page-number").innerHTML = page;
       updateComments(imageId, page - 1);
     });
+    document.querySelector("#loading-page").classList.add("hidden");
     updateImage(0);
+    
   });
 })();

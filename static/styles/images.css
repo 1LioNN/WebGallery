@@ -101,25 +101,6 @@
   background-color: red;
 }
 
-.loading {
-  margin: auto;
-  border: 20px solid #eaf0f6;
-  border-radius: 50%;
-  border-top: 20px solid #317773;
-  width: 200px;
-  height: 200px;
-  animation: spinner 1s linear infinite;
-}
-
-@keyframes spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @media (max-width: 576px) {
   .image-content-container-sm {
     padding: 0px;

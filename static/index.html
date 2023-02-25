@@ -12,17 +12,45 @@
     <link href="styles/images.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <div class="row">
+    <div class="row row-reverse" id="welcome-page">
+      <div class="col-6 col-sm-12">
+        <div class="row webgallery-title webgallery-title-filled webgallery-sm-title align-center no-border">
+          <img class="webgallery-logo" src="media/webgallerylogo.png" />
+          <a class = "credits" href="credits.html"> Credits </a>
+        </div>
+        <div class = "welcome-message">
+           <div> Virtual Galleries at your Fingertips </div>
+        </div>
+        <div class = "sign-in-prompt">
+          Start yours today.
+        </div>
+        <div class = "row sign-in-buttons sign-in-buttons-sm align-vertical">
+          <button class = "btn btn-big">
+            Create Account
+          </button>
+          <h4>- OR -</h4>
+          <button class = "btn btn-big btn-transparent">
+            Log In
+          </button>
+        </div>
+      </div>
+      <div class="col-6 col-sm-12 background-green">
+        <div class="row welcome-splash">
+          <img class ="preview-phone-left preview-phone-left-sm" src="media/previewphone2.png" />
+          <img class ="preview-mac preview-mac-sm" src="media/previewmac.png" />
+          <img class ="preview-phone-right preview-phone-right-sm" src="media/previewphone.png" />  
+        </div>
+      </div>
+    </div>
+    <div class="row hidden" id="main-site">
       <div class="col-3 col-sm-12">
-        <div class="row align-center webgallery-title">
+        <div class="row align-center webgallery-title webgallery-sm-title">
           <img class="webgallery-logo" src="media/webgallerylogo.png" />
           <h2>The Web Gallery</h2>
           <div class="credits">
             <a href="credits.html">Credits</a>
           </div>
         </div>
-        <h3 class="align-text">Share your favorite images with the world.</h3>
-        <h3 class="align-text">Start uploading right away!</h3>
 
         <div class="row align-center align-vertical">
           <button class="btn btn-transparent" id="create-post">
@@ -74,7 +102,7 @@
             <div class="image-author"></div>
           </div>
           <div class="image-content-container image-content-container-sm">
-            <div class="loading image-content"></div>
+            <div class="loading" id="loading-image"></div>
           </div>
           <div class="image-actions row"></div>
         </div>
@@ -123,6 +151,11 @@
             />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row align-center align-vertical">
+      <div class="col-12 col-sm-12">
+        <div class="loading" id="loading-page"></div>
       </div>
     </div>
   </body>
