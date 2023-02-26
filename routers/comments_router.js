@@ -2,7 +2,6 @@ import { Comment } from "../models/comment.js";
 import { Image } from "../models/image.js";
 import { User } from "../models/user.js";
 import { Router } from "express";
-import { isAuthenticated } from "../middleware/auth.js";
 
 export const commentsRouter = Router();
 

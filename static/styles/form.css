@@ -14,7 +14,7 @@
   height: 300px;
 }
 
-.authentication{
+.authentication {
   width: 400px;
 }
 
@@ -26,7 +26,7 @@
   color: #317773;
 }
 
-.complex-form .form-title-big{
+.complex-form .form-title-big {
   font-size: 25px;
   font-family: Verdana, Tahoma, sans-serif;
   margin-bottom: 30px;
@@ -42,7 +42,6 @@
   border: 2px solid rgba(0, 0, 0, 0.466);
   background-color: #fdfaff;
 }
-
 
 .complex-form .form-element:focus {
   outline: none;

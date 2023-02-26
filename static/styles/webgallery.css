@@ -4,7 +4,6 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
-
 p {
   margin: 0;
 }
@@ -35,7 +34,7 @@ h4 {
 .webgallery-logo-big {
   width: 100px;
   height: 100px;
-  margin: 15px 15px 15px 15px
+  margin: 15px 15px 15px 15px;
 }
 
 .title {
@@ -46,14 +45,13 @@ h4 {
   margin: 100px 0px 0px 60px;
 }
 
-.title-small{
+.title-small {
   font-size: 30px;
   color: #317773;
   font-weight: bolder;
   font-family: Verdana, Tahoma, sans-serif;
   margin: 30px 0px 0px 60px;
 }
-
 
 .sign-in-prompt {
   font-size: 24px;
@@ -104,17 +102,16 @@ h4 {
   margin: 0px 5px;
 }
 
-.x-icon{
+.x-icon {
   width: 25px;
   height: 25px;
   margin-left: 100px;
   cursor: pointer;
-  position : absolute;
+  position: absolute;
   top: 0;
   right: 0;
   margin: 25px;
 }
-
 
 .background-green {
   background: radial-gradient(
@@ -134,36 +131,35 @@ h4 {
   z-index: 2;
 }
 
-.user-info-text{
-  color : #317773;
+.user-info-text {
+  color: #317773;
   font-size: 30px;
   font-weight: 700;
-  margin:20px 0px 0px 20px;
+  margin: 20px 0px 0px 20px;
 }
-.side-bar{
+.side-bar {
   display: flex;
   flex-direction: column;
   list-style-type: none;
   margin-left: -40px;
-  width: 115%
+  width: 115%;
 }
 
-.side-action{
+.side-action {
   padding: 15px;
-  color : black;
+  color: black;
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
-  border : 1px solid #31777431;
+  border: 1px solid #31777431;
   display: flex;
-  gap : 15px;
+  gap: 15px;
 }
 
-.side-action:hover{
+.side-action:hover {
   color: #f9f6fc;
   background-color: #31777431;
 }
-
 
 .auth-form {
   position: absolute;
@@ -219,7 +215,7 @@ h4 {
   border: 1px solid #317773;
 }
 
-.btn-auth{
+.btn-auth {
   margin-top: 50px;
 }
 
@@ -291,7 +287,7 @@ h4 {
   margin: auto;
 }
 
-#logout-btn{
+#logout-btn {
   background-color: #f9f6fc;
   text-decoration: none;
   color: #317773;

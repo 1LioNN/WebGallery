@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { User } from "../models/user.js";
+import { Image } from "../models/image.js";
 import bcrypt from "bcrypt";
 import { Sequelize } from "sequelize";
 
@@ -10,7 +11,7 @@ const salt = bcrypt.genSaltSync(saltRounds);
 usersRouter.get("/", async (req, res) => {
   const offset = req.query.page * 6;
   const limit = 6;
-  const users = await User.findAll({
+  let users = await User.findAll({
     offset,
     limit,
     order: [["createdAt", "DESC"]],
@@ -21,6 +22,8 @@ usersRouter.get("/", async (req, res) => {
     },
   });
   const total = (await User.count()) - 1;
+  users = users.sort((a, b) => b.id - a.id);
+  console.log(users);
   return res.json({ users, total });
 });
 
@@ -83,7 +86,24 @@ usersRouter.get("/me", async (req, res) => {
   }
   const currentUser = {
     username: user.username,
-    userId : user.id,
+    userId: user.id,
   };
   return res.json(currentUser);
+});
+
+usersRouter.get("/:id/image", async (req, res) => {
+  const id = req.params.id;
+  const offset = req.query.page;
+  const limit = 1;
+  const images = await Image.findAll({
+    offset,
+    limit,
+    where: { UserId: id },
+    order: [["createdAt", "DESC"]],
+    include: { association: "User", attributes: ["username"] },
+  });
+  const total = await Image.count({
+    where: { UserId: id },
+  });
+  return res.json({ images, total });
 });

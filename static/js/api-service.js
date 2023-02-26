@@ -59,8 +59,14 @@ let apiService = (function () {
     }).then((res) => res.json());
   };
 
-  module.getImage = function (page, userId) {
-    return fetch(`/api/images/` + userId +`?page=${page}`).then((res) => res.json());
+  module.getImage = function (imageId) {
+    return fetch(`/api/images/` + imageId).then((res) => res.json());
+  };
+
+  module.getImages = function (page, userId) {
+    return fetch(`/api/users/` + userId + `/image?page=${page}`).then((res) =>
+      res.json()
+    );
   };
 
   module.getComments = function (imageId, page) {
@@ -69,7 +75,7 @@ let apiService = (function () {
     );
   };
 
-  module.createUser = function (username,password) {
+  module.createUser = function (username, password) {
     return fetch("/api/users/signup", {
       method: "POST",
       headers: {
@@ -77,12 +83,12 @@ let apiService = (function () {
       },
       body: JSON.stringify({
         username: username,
-        password: password
+        password: password,
       }),
     }).then((res) => res.json());
   };
 
-  module.loginUser = function (username,password) {
+  module.loginUser = function (username, password) {
     return fetch("/api/users/signin", {
       method: "POST",
       headers: {
@@ -90,7 +96,7 @@ let apiService = (function () {
       },
       body: JSON.stringify({
         username: username,
-        password: password
+        password: password,
       }),
     }).then((res) => res.json());
   };
