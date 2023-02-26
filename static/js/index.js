@@ -469,7 +469,9 @@
           document.querySelector("#next-gallery-page").style.visibility =
             "visible";
         }
-
+        if (users.users.length === 0 && page > 0) {
+          updateComments(imageId, page - 1);
+        }
         //If there are users, display them
         users.users.forEach(function (user) {
           let galleryElmnt = document.createElement("div");
