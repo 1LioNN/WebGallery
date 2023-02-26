@@ -26,19 +26,25 @@ imagesRouter.post("/", upload.single("picture"), async (req, res) => {
   return res.json(image);
 });
 
-imagesRouter.get("/", async (req, res) => {
+imagesRouter.get("/:id/", async (req, res) => {
+  const id = req.params.id;
   const offset = req.query.page;
   const limit = 1;
-  console.log(offset, limit);
+  console .log("id" + id);
   const images = await Image.findAll({
     offset,
     limit,
+    where: { UserId: id },
     order: [["createdAt", "DESC"]],
     include: { association: "User", attributes: ["username"] },
   });
-  const total = await Image.count();
+  const total = await Image.count({
+    where: { UserId: id },
+  });
+  console.log (images);
   return res.json({ images, total });
 });
+
 
 imagesRouter.delete("/:id/", async (req, res) => {
   const image = await Image.findByPk(req.params.id);

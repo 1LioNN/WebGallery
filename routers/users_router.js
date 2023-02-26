@@ -1,20 +1,27 @@
 import { Router } from "express";
 import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
+import { Sequelize } from "sequelize";
 
 export const usersRouter = Router();
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
 
-usersRouter.post("/", async (req, res) => {
-  const user = await User.findOne({ where: { username: req.body.username } });
-  if (!user) {
-    const newUser = await User.create({
-      username: req.body.username,
-    });
-    return res.json(newUser);
-  }
-  return res.json({ message: "User already exists" });
+usersRouter.get("/", async (req, res) => {
+  const offset = req.query.page * 6;
+  const limit = 6;
+  const users = await User.findAll({
+    offset,
+    limit,
+    order: [["createdAt", "DESC"]],
+    where: {
+      id: {
+        [Sequelize.Op.not]: req.session.userId,
+      },
+    },
+  });
+  const total = (await User.count()) - 1;
+  return res.json({ users, total });
 });
 
 usersRouter.post("/signup", async (req, res) => {
@@ -62,6 +69,7 @@ usersRouter.post("/signin", async (req, res) => {
 
 usersRouter.get("/signout", function (req, res, next) {
   req.session.destroy();
+  return res.redirect("/");
 });
 
 usersRouter.get("/me", async (req, res) => {
@@ -75,6 +83,7 @@ usersRouter.get("/me", async (req, res) => {
   }
   const currentUser = {
     username: user.username,
+    userId : user.id,
   };
   return res.json(currentUser);
 });

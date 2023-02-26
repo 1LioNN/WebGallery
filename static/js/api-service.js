@@ -59,8 +59,8 @@ let apiService = (function () {
     }).then((res) => res.json());
   };
 
-  module.getImage = function (page) {
-    return fetch(`/api/images?page=${page}`).then((res) => res.json());
+  module.getImage = function (page, userId) {
+    return fetch(`/api/images/` + userId +`?page=${page}`).then((res) => res.json());
   };
 
   module.getComments = function (imageId, page) {
@@ -95,6 +95,9 @@ let apiService = (function () {
     }).then((res) => res.json());
   };
 
+  module.getUsers = function (page) {
+    return fetch(`/api/users?page=${page}`).then((res) => res.json());
+  };
 
   module.getUsername = function () {
     return fetch(`/api/users/me`).then((res) => res.json());

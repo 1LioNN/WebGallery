@@ -132,41 +132,42 @@
           alert(res.error);
         } else {
           document.querySelector("#auth-popup").innerHTML = "";
-          document.querySelector("#auth-popup").classList.add("hidden");
           document.querySelector("#welcome-page").classList.add("hidden");
           document.querySelector("#main-site").classList.remove("hidden");
           displayUserInfo(username);
+          updateGalleries(0);
         }
       });
     });
   }
 
-  function displayUserInfo(username){
+  function displayUserInfo(username) {
     let userInfo = document.createElement("div");
     userInfo.className = "col-12 col-sm-12";
     userInfo.innerHTML = `
-    <div class="row align-vertical align-center">
-      <h3>You are currently signed in as:</h3>
+    <div class="row user-info-text align-center">
+      User: ${username}
     </div>
-    <div class="row align-vertical"> 
-      <h2>${username}</h2>
+    <div class="row">
+    <ul class = "side-bar">
+      <li class = "side-action" id="home"><img class="btn-icon" src="/media/house-solid.svg"> Home </li>
+      <li class = "side-action" id ="user-gallery"><img class="btn-icon" src="/media/user-solid.svg"> My Gallery</li>
+      <a href="/api/users/signout" id="logout-btn"> <li class = "side-action" "><img class="btn-icon" src="/media/right-from-bracket-solid.svg"> Logout </li></a>
+    </ul>
     </div>
-    <div class="row align-vertical">
-    <button class="btn btn-big" id="logout-btn" href="/api/users/signout">
-      <div class="row align-center align-vertical">
-        Log Out
-      </div>
-    </button>
   </div>
   `;
     document.querySelector("#user-info").append(userInfo);
-    userInfo.querySelector("#logout-btn").addEventListener("click", function(){
-        document.querySelector("#user-info").innerHTML = "";
-        document.querySelector("#main-site").classList.add("hidden");
-        document.querySelector("#welcome-page").classList.remove("hidden");
-      })
-    }
-    
+    userInfo.querySelector("#home").addEventListener("click", function () {
+      document.querySelector(".gallery-page-number").innerHTML = 1;
+      updateGalleries(0);
+    });
+    userInfo.querySelector("#user-gallery").addEventListener("click", function () {
+      apiService.getUsername().then((res) => {
+        updateImage(0, res.userId);
+      });
+    });
+  }
 
   function updateComments(imageId, page) {
     //Clear the comment section
@@ -246,8 +247,11 @@
       }
     });
   }
-  function updateImage(page) {
+  function updateImage(page, userId) {
     //Clear the image content container
+    document.querySelector("#galleries").classList.add("hidden");
+    document.querySelector("#images").classList.remove("hidden");
+    
     document.querySelector(
       ".image-content-container"
     ).innerHTML = `<div class="loading" id = "loading-image"></div>`;
@@ -256,30 +260,38 @@
     //Clear Title and Author
     document.querySelector(".image-title").innerHTML = "";
     document.querySelector(".image-author").innerHTML = "";
-    //document.querySelector(".loading").classList.remove("hidden");
+    apiService.getUsername().then((res) => {
+      if (res.userId === userId) {
+        document.querySelector("#create-post").classList.remove("hidden");
+      }else {
+        document.querySelector("#create-post").classList.add("hidden");
+      }
     //Get image
-    apiService.getImage(page).then(function (images) {
+    apiService.getImage(page, userId).then(function (images) {
+      console.log(images);
       if (images.total === 0) {
         //If there are no images, display no image placeholder"
         let imageTxtElmnt = document.createElement("div");
         imageTxtElmnt.className = "no-img-text no-img-text-sm";
-        imageTxtElmnt.innerHTML = "No images found... Upload some now!";
+        imageTxtElmnt.innerHTML = "There are no images in this gallery.";
         let imageElmnt = new Image();
         imageElmnt.className = "no-img-icon";
         imageElmnt.src = "media/no-image-gallery.png";
         document
           .querySelector(".image-content-container")
           .prepend(imageTxtElmnt);
-        document.querySelector(".loading").classList.add("hidden");
+        document.querySelector("#loading-image").classList.add("hidden");
         document.querySelector(".image-content-container").prepend(imageElmnt);
         document.querySelector("#comments").classList.add("hidden");
       } else {
         let image = images.images[0];
         if (images.images.length === 0 && page > 0) {
-          updateImage(page - 1);
+          updateImage(page - 1, userId);
           return;
         }
         //Display image
+        let middleActionId = res.userId === userId ? "delete-img" : "home-btn";
+        let middleSrc = res.userId === userId ? "media/trash-solid.svg" : "media/circle-regular.svg";
         document.querySelector("#comments").classList.remove("hidden");
         document.querySelector(".image-title").innerHTML = image.title;
         document.querySelector(".image-author").innerHTML =
@@ -301,8 +313,8 @@
       <div class="col-4">
         <img
           class="action-btn action-btn-sm"
-          id="delete-img"
-          src="media/trash-solid.svg"
+          id="${middleActionId}"
+          src="${middleSrc}"
         />
       </div>
       <div class="col-4">
@@ -313,6 +325,7 @@
         />
       </div>
       `;
+      if (res.userId === userId) {
         //Delete Image
         imageActionsElmnt
           .querySelector("#delete-img")
@@ -325,10 +338,10 @@
               return;
             }
             apiService.deleteImage(image.id).then(function () {
-              updateImage(page);
+              updateImage(page, userId);
             });
           });
-
+      } 
         //Previous Image
         imageActionsElmnt
           .querySelector("#prev-img")
@@ -340,7 +353,7 @@
             ) {
               return;
             }
-            updateImage(page - 1);
+            updateImage(page - 1, userId);
           });
 
         //Next Image
@@ -354,11 +367,11 @@
             ) {
               return;
             }
-            updateImage(page + 1);
+            updateImage(page + 1, userId);
           });
 
         document.querySelector(".image-actions").append(imageActionsElmnt);
-        document.querySelector(".loading").classList.add("hidden");
+        document.querySelector("#loading-image").classList.add("hidden");
         document.querySelector(".image-content-container").prepend(imageElmnt);
         document.querySelector("#submit-image").classList.remove("disabled");
 
@@ -384,19 +397,105 @@
         }
       }
     });
+  });
+  }
+
+  function updateGalleries(page) {
+    //Clear the gallery content container
+    //Hide images and comments
+    document.querySelector("#comments").classList.add("hidden");
+    document.querySelector("#images").classList.add("hidden");
+    document.querySelector("#galleries").classList.remove("hidden");
+
+    document.querySelector(
+      ".gallery-content-container"
+    ).innerHTML = `<div class="loading" id = "loading-gallery"></div>`;
+    console.log("Page: " + page);
+    apiService.getUsers(page).then(function (users) {
+      console.log(users);
+      if (users.total === 0) {
+        let galleryTxtElmnt = document.createElement("div");
+        galleryTxtElmnt.className = "row no-gallery-txt align-vertical";
+        galleryTxtElmnt.innerHTML = `<div class = "cols-12">
+        <div class ="row align-vertical">
+          <img src = "/media/no-image-gallery.png">
+        </div>
+         <div class = "row align-vertical">
+          No Galleries to show. 
+         </div>
+      </div>`;
+        document
+          .querySelector(".gallery-content-container")
+          .prepend(galleryTxtElmnt);
+        document.querySelector(".loading").classList.add("hidden");
+      } else {
+
+        //If there are users, display the pagination
+        document.querySelector(".gallery-pages").classList.remove("hidden");
+        if (page === 0) {
+          document.querySelector("#prev-gallery-page").style.visibility =
+            "hidden";
+        }else{
+          document.querySelector("#prev-gallery-page").style.visibility =
+            "visible";
+        }
+        if (users.total - (page + 1) * 6 <= 0) {
+          document.querySelector("#next-gallery-page").style.visibility =
+            "hidden";
+        }else{
+          document.querySelector("#next-gallery-page").style.visibility =
+            "visible";
+        }
+
+        //If there are users, display them
+        users.users.forEach(function (user) {
+          apiService.getImage(0, user.id).then(function (images) {
+            console.log (user.username);
+            let total = images.total;
+            let imgsrc;
+            if (total === 0) {
+              imgsrc = "/media/no-preview.png";
+            }
+            else{
+              imgsrc = "/api/images/" + images.images[0].id + "/picture";
+            }
+            let galleryElmnt = document.createElement("div");
+            galleryElmnt.className = "gallery";
+            galleryElmnt.id = "gallery" + user.id;
+            galleryElmnt.innerHTML = `
+          <img class = "gallery-preview" src = "${imgsrc}">
+          <div class="row gallery-info">
+           ${user.username}'s Gallery
+        </div>
+        `;
+            document
+              .querySelector(".gallery-content-container")
+              .prepend(galleryElmnt);
+            //Add event listeners to the galleries
+            galleryElmnt.addEventListener("click", function () {
+              updateImage(0, user.id);
+            }
+            );
+          });
+        });
+        document.querySelector(".loading").classList.add("hidden");
+      }
+    });
   }
 
   window.addEventListener("load", function () {
     //Toggle visibility of screens if user is logged in
     apiService.getUsername().then(function (res) {
+      console.log(res);
       if (res.username) {
         displayUserInfo(res.username);
         document.querySelector("#welcome-page").classList.add("hidden");
         document.querySelector("#main-site").classList.remove("hidden");
-      }else{
+      } else {
         document.querySelector("#welcome-page").classList.remove("hidden");
         document.querySelector("#main-site").classList.add("hidden");
       }
+    });
       //Click the sign up button to toggle visibility of sign up form
       document
         .querySelector("#signup-form-btn")
@@ -410,7 +509,7 @@
         .addEventListener("click", function () {
           showLogin();
         });
-
+   
       //Click the create post button to toggle visibility of upload form
       document
         .querySelector("#create-post")
@@ -449,19 +548,21 @@
 
           e.target.querySelector("#submit-image").classList.add("disabled");
           apiService.getUsername().then((res) => {
-          const fileField = document.querySelector('input[type="file"]');
-          const author = res.username;
-          const title = document.getElementById("image-title").value;
-          const picture = fileField.files[0];
-          document.getElementById("upload-image-form").reset();
-          apiService.addImage(title, author, picture).then((res) => {
-            if (res.error) {
-              alert(res.error);
-              return;
-            }
-            updateImage(0);
+            const fileField = document.querySelector('input[type="file"]');
+            const author = res.username;
+            const title = document.getElementById("image-title").value;
+            const picture = fileField.files[0];
+            document.getElementById("upload-image-form").reset();
+            apiService.addImage(title, author, picture).then((res) => {
+              if (res.error) {
+                alert(res.error);
+                return;
+              }
+              apiService.getUsername().then((res) => {
+                updateImage(0, res.userId);
+              });
+            });
           });
-        });
         });
       //Create Comment
       document
@@ -478,16 +579,16 @@
 
           e.target.querySelector("#submit-comment").classList.add("disabled");
           apiService.getUsername().then((res) => {
-          const author = res.username;
-          const content = document.getElementById("comment-content").value;
-          let imageId = document.querySelector(".image-content-container")
-            .firstChild.id;
-          imageId = parseInt(imageId.substring(5, length.imageId));
-          document.getElementById("create-comment-form").reset();
-          apiService.addComment(imageId, author, content).then(() => {
-            updateComments(imageId, 0);
+            const author = res.username;
+            const content = document.getElementById("comment-content").value;
+            let imageId = document.querySelector(".image-content-container")
+              .firstChild.id;
+            imageId = parseInt(imageId.substring(5, length.imageId));
+            document.getElementById("create-comment-form").reset();
+            apiService.addComment(imageId, author, content).then(() => {
+              updateComments(imageId, 0);
+            });
           });
-        });
         });
       //Previous Page Comments
       document
@@ -533,8 +634,24 @@
           document.querySelector("#page-number").innerHTML = page;
           updateComments(imageId, page - 1);
         });
+         //pagination 
+         document.querySelector("#prev-gallery-page").addEventListener("click", function () {
+          let page = document.querySelector(".gallery-page-number").innerHTML;
+          page = parseInt(page);
+          page--;
+          document.querySelector(".gallery-page-number").innerHTML = page;
+          updateGalleries(page - 1);
+        }
+        );
+        document.querySelector("#next-gallery-page").addEventListener("click", function () {
+          let page = document.querySelector(".gallery-page-number").innerHTML;
+          page = parseInt(page);
+          page++;
+          document.querySelector(".gallery-page-number").innerHTML = page;
+          updateGalleries(page - 1);
+        }
+        );  
       document.querySelector("#loading-page").classList.add("hidden");
-      updateImage(0);
     });
-  });
+    updateGalleries(0);
 })();
