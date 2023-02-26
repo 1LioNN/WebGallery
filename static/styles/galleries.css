@@ -22,6 +22,22 @@
   height: 350px;
   width: 350px;
   cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.gallery:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px 0 #317773;
+}
+
+.gallery:hover .gallery-preview {
+  transform: scale(1.51);
+  filter: brightness(0.4);
+}
+
+.gallery:hover .gallery-info {
+  color: #8e8c91;
+  transform: translateY(-10%);
 }
 
 .gallery-pages {
@@ -42,8 +58,9 @@
   width: 100%;
   max-width: 100%;
   max-height: 100%;
-  filter: brightness(0.5);
   object-fit: cover;
+  filter: brightness(0.8);
+  transition: all 0.3s ease-in-out;
 }
 
 .gallery-info {
@@ -51,6 +68,7 @@
   font-weight: 700;
   color: #317773;
   padding: 10px 20px 20px 20px;
+  transition: all 0.3s ease-in-out;
 }
 
 .btn-gallery {
