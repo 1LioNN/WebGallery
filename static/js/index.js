@@ -482,7 +482,7 @@
             let total = images.total;
             let imgsrc;
             if (total === 0) {
-              imgsrc = "/media/no-preview.png";
+              imgsrc = "/media/no-preview.jpg";
             } else {
               imgsrc = "/api/images/" + images.images[0].id + "/picture";
             }

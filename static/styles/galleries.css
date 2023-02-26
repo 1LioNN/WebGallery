@@ -22,7 +22,7 @@
   height: 350px;
   width: 350px;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  transition:  0.3s ease-in-out; 
 }
 
 .gallery:hover {
@@ -36,7 +36,7 @@
 }
 
 .gallery:hover .gallery-info {
-  color: #8e8c91;
+  color : #f9f6fc;
   transform: translateY(-10%);
 }
 
@@ -70,6 +70,7 @@
   padding: 10px 20px 20px 20px;
   transition: all 0.3s ease-in-out;
 }
+
 
 .btn-gallery {
   border-radius: 7px;
