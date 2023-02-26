@@ -235,9 +235,6 @@
           //If the comment is not by the current user, or the gallery owner, hide the delete button
           apiService.getImage(imageId).then((image) => {
             apiService.getUsername().then((res) => {
-              console.log(res.username);
-              console.log(comment.User.username);
-              console.log(image.User.username);
               if (
                 comment.User.username === res.username ||
                 res.username === image.User.username
@@ -423,8 +420,6 @@
           document.querySelector("#submit-image").classList.remove("disabled");
 
           updateComments(image.id, 0);
-
-          console.log(page);
         }
       });
     });
@@ -442,7 +437,6 @@
       ".gallery-content-container"
     ).innerHTML = `<div class="loading" id = "loading-gallery"></div>`;
     apiService.getUsers(page).then(function (users) {
-      console.log(users);
       if (users.total === 0) {
         let galleryTxtElmnt = document.createElement("div");
         galleryTxtElmnt.className = "row no-gallery-txt align-vertical";

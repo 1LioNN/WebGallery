@@ -22,8 +22,6 @@ usersRouter.get("/", async (req, res) => {
     },
   });
   const total = (await User.count()) - 1;
-  users = users.sort((a, b) => b.id - a.id);
-  console.log(users);
   return res.json({ users, total });
 });
 
