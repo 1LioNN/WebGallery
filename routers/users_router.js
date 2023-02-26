@@ -41,11 +41,12 @@ usersRouter.post("/signup", async (req, res) => {
     } catch {
       return res.status(422).json({ error: "User creation failed." });
     }
+
     return res.json({
       username: newUser.username,
     });
   }
-  return res.json({ message: "Username is taken." });
+  return res.status(401).json({ error: "Username is taken." });
 });
 
 usersRouter.post("/signin", async (req, res) => {
