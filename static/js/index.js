@@ -438,6 +438,7 @@
     ).innerHTML = `<div class="loading" id = "loading-gallery"></div>`;
     apiService.getUsers(page).then(function (users) {
       if (users.total === 0) {
+        document.querySelector("#gallery-pages").classList.add("hidden");
         let galleryTxtElmnt = document.createElement("div");
         galleryTxtElmnt.className = "row no-gallery-txt align-vertical";
         galleryTxtElmnt.innerHTML = `<div class = "cols-12">
@@ -454,7 +455,7 @@
         document.querySelector(".loading").classList.add("hidden");
       } else {
         //If there are users, display the pagination
-        document.querySelector(".gallery-pages").classList.remove("hidden");
+        document.querySelector("#gallery-pages").classList.remove("hidden");
         if (page === 0) {
           document.querySelector("#prev-gallery-page").style.visibility =
             "hidden";
