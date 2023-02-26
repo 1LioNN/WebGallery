@@ -442,6 +442,7 @@
       ".gallery-content-container"
     ).innerHTML = `<div class="loading" id = "loading-gallery"></div>`;
     apiService.getUsers(page).then(function (users) {
+      console.log(users);
       if (users.total === 0) {
         let galleryTxtElmnt = document.createElement("div");
         galleryTxtElmnt.className = "row no-gallery-txt align-vertical";
@@ -477,6 +478,9 @@
 
         //If there are users, display them
         users.users.forEach(function (user) {
+          let galleryElmnt = document.createElement("div");
+          galleryElmnt.className = "gallery";
+          galleryElmnt.id = "gallery" + user.id;
           apiService.getImages(0, user.id).then(function (images) {
             let total = images.total;
             let imgsrc;
@@ -485,22 +489,21 @@
             } else {
               imgsrc = "/api/images/" + images.images[0].id + "/picture";
             }
-            let galleryElmnt = document.createElement("div");
-            galleryElmnt.className = "gallery";
-            galleryElmnt.id = "gallery" + user.id;
             galleryElmnt.innerHTML = `
-          <img class = "gallery-preview" src = "${imgsrc}">
-          <div class="row gallery-info">
-           ${user.username}'s Gallery
-        </div>
-        `;
-            document
-              .querySelector(".gallery-content-container")
-              .prepend(galleryElmnt);
-            //Add event listeners to the galleries
-            galleryElmnt.addEventListener("click", function () {
-              updateImage(0, user.id);
-            });
+              <img class = "gallery-preview" src = "${imgsrc}">
+              <div class="row gallery-info">
+              ${user.username}'s Gallery
+              </div>
+              `;
+          });
+          document
+            .querySelector(".gallery-content-container")
+            .append(galleryElmnt);
+
+          //Add event listeners to the galleries
+
+          galleryElmnt.addEventListener("click", function () {
+            updateImage(0, user.id);
           });
         });
         document.querySelector(".loading").classList.add("hidden");
