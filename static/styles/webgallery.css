@@ -154,13 +154,14 @@ h4 {
   border: 1px solid #31777431;
   display: flex;
   gap: 15px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
 }
 
 .side-action:hover {
+  background-color: #31777331;
   color: #f9f6fc;
-  background-color: #31777431;
 }
-
 .auth-form {
   position: absolute;
   left: 0;
